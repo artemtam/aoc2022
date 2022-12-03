@@ -7,29 +7,12 @@ const solvePart1 = (input: string): number => {
     let prioritiesSum = 0;
 
     for (const rucksack of rucksacks) {
-        const items = rucksack.split('');
+        const itemsInFirstComp = rucksack.slice(0, rucksack.length / 2);
 
-        // fill in a set of items in the first compartment
-
-        const itemsInFirstComp = new Set<string>();
-
-        for (let i = 0; i < items.length / 2; i++) {
-            itemsInFirstComp.add(items[i]);
-        }
-
-        // fill in a set of items in the second compartment
-
-        const itemsInSecondComp = new Set<string>();
-
-        for (let i = items.length / 2; i < items.length; i++) {
-            if (!itemsInSecondComp.has(items[i])) {
-                itemsInSecondComp.add(items[i]);
-
-                // if new item exists in the first comp, add the priority to the sum
-
-                if (itemsInFirstComp.has(items[i])) {
-                    prioritiesSum += itemPriorities.indexOf(items[i]);
-                }
+        for (let i = rucksack.length / 2; i < rucksack.length; i++) {
+            if (itemsInFirstComp.includes(rucksack[i])) {
+                prioritiesSum += itemPriorities.indexOf(rucksack[i]);
+                break;
             }
         }
     }
@@ -45,28 +28,12 @@ const solvePart2 = (input: string): number => {
     // iterate over groups of 3
 
     for (let i = 0; i < rucksacks.length - 2; i += 3) {
-        // parse all 3 rucksacks
-
-        const rucksackA = rucksacks[i].split('');
-        const rucksackB = rucksacks[i + 1].split('');
-        const rucksackC = rucksacks[i + 2].split('');
-
-        const rucksackASet = new Set(rucksackA);
-
-        // find common items between A and B
-
-        const rucksackABSet = new Set();
-
-        for (const item of rucksackB) {
-            if (rucksackASet.has(item)) {
-                rucksackABSet.add(item);
-            }
-        }
-
-        // find a single common item between AB and C
+        const rucksackA = rucksacks[i];
+        const rucksackB = rucksacks[i + 1];
+        const rucksackC = rucksacks[i + 2];
 
         for (const item of rucksackC) {
-            if (rucksackABSet.has(item)) { // if found, add priority to the sum and break
+            if (rucksackA.includes(item) && rucksackB.includes(item)) {
                 prioritiesSum += itemPriorities.indexOf(item);
                 break;
             }
