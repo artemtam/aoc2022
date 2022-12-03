@@ -1,5 +1,5 @@
 // index of each item = the priority (_ to skip 0)
-const itemPriorities = '_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const itemPriorities = '_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 const solvePart1 = (input: string): number => {
     const rucksacks = input.split('\n');
