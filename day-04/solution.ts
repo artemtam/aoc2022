@@ -19,6 +19,7 @@ const solve = (input: string): [number, number] => {
 
     return [fullOverlaps, restOfOverlaps];
 };
+
 const solvePart1 = (input: string): number => {
     const [fullOverlaps] = solve(input);
     return fullOverlaps;
