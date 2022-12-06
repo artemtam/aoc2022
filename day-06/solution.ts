@@ -4,16 +4,15 @@ const solve = (input: string, uniqueCount: number): number => {
     for (let i = 0; i < input.length; i++) {
         const ch = input[i];
 
-        if (!uniqueCharacters.includes(ch)) {
-            uniqueCharacters.push(ch);
-
-            if (uniqueCharacters.length === uniqueCount) { // if found uniqueCount in a row -> return
-                return i + 1;
-            }
-        } else { // if not unique -> remove all before the duplicated one (incl) and continue
+        if (uniqueCharacters.includes(ch)) { // if exists -> remove all before the one (including it) and continue
             const repeatedChIndex = uniqueCharacters.indexOf(ch);
             uniqueCharacters.splice(0, repeatedChIndex + 1);
-            uniqueCharacters.push(ch);
+        }
+
+        uniqueCharacters.push(ch);
+
+        if (uniqueCharacters.length === uniqueCount) {
+            return i + 1;
         }
     }
 
