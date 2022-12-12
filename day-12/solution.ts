@@ -29,10 +29,10 @@ const findSmallestUnvisited = (unvisited: Set<number>, distances: number[]): num
 
 // Dijkstra (based on https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Algorithm)
 // Could be more optimal with heap-based priority queue
-const dijkstra = (startingNode: number, adjacencySet: Map<number, Set<number>>): number[] => {
+const dijkstra = (startingNode: number, adjacencySets: Map<number, Set<number>>): number[] => {
     // Keep track of unvisited node
 
-    const unvisited = new Set<number>(adjacencySet.keys());
+    const unvisited = new Set<number>(adjacencySets.keys());
 
     // Tentative distance values for each node (0 – if startingNode, Infinity – if any other node)
 
@@ -40,7 +40,7 @@ const dijkstra = (startingNode: number, adjacencySet: Map<number, Set<number>>):
 
     // Fill in initial `unvisited` and `distances`
 
-    for (const i of adjacencySet.keys()) {
+    for (const i of adjacencySets.keys()) {
         unvisited.add(i); // all are unvisited
         distances.push(i === startingNode ? 0 : Infinity); // 0 – if startingNode, Infinity – if any other node
     }
@@ -56,7 +56,7 @@ const dijkstra = (startingNode: number, adjacencySet: Map<number, Set<number>>):
 
         // Calculate all neighbors distances, filtering out visited
 
-        for (const u of adjacencySet.get(curr)!) {
+        for (const u of adjacencySets.get(curr)!) {
             if (unvisited.has(u)) {
                 distances[u] = Math.min(distances[u], distances[curr] + 1);
             }
@@ -135,9 +135,9 @@ const solvePart2 = (input: string): number => {
 
     // Build adjacency list
 
-    const adjacencySet: Map<number, Set<number>> = new Map(); // nodeIndex => Set<nodeIndex, nodeIndex, ...>
+    const adjacencySets: Map<number, Set<number>> = new Map(); // nodeIndex => Set<nodeIndex, nodeIndex, ...>
 
-    let startingNode = -1; // CURRENT_POSITION index in adjacencySet
+    let startingNode = -1; // BEST_SIGNAL_POSITION index in adjacencySets
 
     for (let y = 0; y < H; y++) {
         for (let x = 0; x < W; x++) {
@@ -167,13 +167,13 @@ const solvePart2 = (input: string): number => {
                 startingNode = i;
             }
 
-            adjacencySet.set(i, set);
+            adjacencySets.set(i, set);
         }
     }
 
     // Count all shortest distances
 
-    const distances = dijkstra(startingNode, adjacencySet);
+    const distances = dijkstra(startingNode, adjacencySets);
 
     // Find the closest `a`
 
